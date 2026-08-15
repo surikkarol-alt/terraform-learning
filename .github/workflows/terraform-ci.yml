@@ -98,7 +98,13 @@ jobs:
           chmod 600 ~/.oci/config
 
       - name: Terraform Init
-        run: terraform init -input=false
+        run: |
+          terraform init -input=false \
+            -backend-config="user_ocid=${{ secrets.OCI_USER_OCID }}" \
+            -backend-config="tenancy_ocid=${{ secrets.OCI_TENANCY_OCID }}" \
+            -backend-config="fingerprint=${{ secrets.OCI_FINGERPRINT }}" \
+            -backend-config="private_key_path=/tmp/oci_api_key.pem" \
+            -backend-config="region=${{ secrets.OCI_REGION }}"
 
       - name: Terraform Plan DEV
         run: terraform plan -input=false
