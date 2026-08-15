@@ -10,12 +10,8 @@ on:
       - main
 
 jobs:
-  terraform-check:
+  terraform-format:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: lesson-09-environments/environments/dev
 
     steps:
       - name: Checkout repository
@@ -27,8 +23,29 @@ jobs:
           terraform_version: 1.15.8
 
       - name: Terraform Format Check
-        working-directory: ${{ github.workspace }}
         run: terraform fmt -check -recursive
+
+  terraform-validate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        environment:
+          - dev
+          - prod
+
+    defaults:
+      run:
+        working-directory: lesson-09-environments/environments/${{ matrix.environment }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
 
       - name: Terraform Init
         run: terraform init -backend=false
