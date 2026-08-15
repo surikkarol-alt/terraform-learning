@@ -97,14 +97,35 @@ jobs:
 
           chmod 600 ~/.oci/config
 
-      - name: Terraform Init
+      - name: Check OCI credentials
+        shell: bash
         run: |
-          terraform init -input=false \
-            -backend-config="user_ocid=${{ secrets.OCI_USER_OCID }}" \
-            -backend-config="tenancy_ocid=${{ secrets.OCI_TENANCY_OCID }}" \
-            -backend-config="fingerprint=${{ secrets.OCI_FINGERPRINT }}" \
-            -backend-config="private_key_path=/tmp/oci_api_key.pem" \
-            -backend-config="region=${{ secrets.OCI_REGION }}"
+          test -s ~/.oci/config
+          test -s /tmp/oci_api_key.pem
+
+          openssl pkey \
+            -in /tmp/oci_api_key.pem \
+            -check \
+            -noout
+
+          ACTUAL_FP=$(openssl rsa \
+            -in /tmp/oci_api_key.pem \
+            -pubout \
+            -outform DER 2>/dev/null \
+            | openssl md5 -c \
+            | sed 's/^MD5(stdin)= //')
+
+          if [ "$ACTUAL_FP" != "${{ secrets.OCI_FINGERPRINT }}" ]; then
+            echo "ERROR: OCI private key fingerprint does not match OCI_FINGERPRINT"
+            exit 1
+          fi
+
+          echo "OCI private key is valid"
+          echo "OCI fingerprint matches"
+          echo "OCI config profile exists"
+
+      - name: Terraform Init
+        run: terraform init -input=false
 
       - name: Terraform Plan DEV
         run: terraform plan -input=false
