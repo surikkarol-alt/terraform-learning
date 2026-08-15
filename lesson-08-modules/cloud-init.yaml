@@ -1,0 +1,16 @@
+#cloud-config
+
+package_update: true
+
+packages:
+  - nginx
+
+write_files:
+  - path: /var/tmp/cloud-init-test.txt
+    permissions: '0644'
+    content: |
+      Cloud-init works!
+      Nginx installed automatically by Terraform.
+
+runcmd:
+  - iptables -I INPUT 5 -p tcp --dport 80 -j ACCEPT
