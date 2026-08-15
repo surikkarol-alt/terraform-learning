@@ -1,0 +1,66 @@
+name: Terraform Apply PROD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  apply-prod:
+    runs-on: ubuntu-latest
+
+    environment: production
+
+    defaults:
+      run:
+        working-directory: lesson-09-environments/environments/prod
+
+    env:
+      TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
+      TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
+      TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
+      TF_VAR_private_key_path: /tmp/oci_api_key.pem
+      TF_VAR_region: ${{ secrets.OCI_REGION }}
+      TF_VAR_environment: prod
+      TF_VAR_ssh_public_key_path: /tmp/id_rsa.pub
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+          terraform_wrapper: false
+
+      - name: Configure OCI credentials
+        shell: bash
+        run: |
+          printf '%s\n' "${{ secrets.OCI_PRIVATE_KEY }}" > /tmp/oci_api_key.pem
+          chmod 600 /tmp/oci_api_key.pem
+
+          mkdir -p ~/.oci
+          cat > ~/.oci/config <<EOF
+          [DEFAULT]
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=/tmp/oci_api_key.pem
+          EOF
+
+          chmod 600 ~/.oci/config
+
+      - name: Configure SSH public key
+        shell: bash
+        run: |
+          printf '%s\n' "${{ secrets.SSH_PUBLIC_KEY }}" > /tmp/id_rsa.pub
+          chmod 600 /tmp/id_rsa.pub
+
+      - name: Terraform Init
+        run: terraform init -input=false
+
+      - name: Terraform Plan PROD
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform Apply PROD
+        run: terraform apply -input=false -auto-approve tfplan
