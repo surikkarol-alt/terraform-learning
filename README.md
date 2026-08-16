@@ -4,6 +4,17 @@
 
 Infrastructure as Code project built with Terraform and Oracle Cloud Infrastructure (OCI).
 
+## Project Highlights
+
+- Built reusable Terraform modules for OCI networking and compute
+- Created isolated DEV and PROD environments
+- Configured remote Terraform state using OCI Object Storage
+- Automated Terraform fmt, validate, and plan with GitHub Actions
+- Implemented manual Terraform apply workflows for DEV and PROD
+- Protected PROD deployments with GitHub Environment approval
+- Provisioned Ubuntu instances automatically with cloud-init
+- Installed and started Nginx automatically during infrastructure deployment
+
 ## Features
 
 - Terraform modules for network and compute
