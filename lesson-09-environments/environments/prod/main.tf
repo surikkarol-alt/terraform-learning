@@ -14,7 +14,7 @@ module "compute" {
   cloud_init_path     = "${path.root}/cloud-init.yaml"
   environment         = var.environment
 
-  shape         = "VM.Standard.E2.1.Micro"
+  shape         = "VM.Standard.A1.Flex"
   ocpus         = 1
-  memory_in_gbs = 1
+  memory_in_gbs = 6
 }
