@@ -15,6 +15,20 @@ Infrastructure as Code project built with Terraform and Oracle Cloud Infrastruct
 - Provisioned Ubuntu instances automatically with cloud-init
 - Installed and started Nginx automatically during infrastructure deployment
 
+## Skills Demonstrated
+
+- Infrastructure as Code with Terraform
+- Modular Terraform architecture
+- Multi-environment infrastructure with DEV and PROD
+- OCI networking and compute provisioning
+- Remote Terraform state management
+- GitHub Actions CI/CD pipelines
+- Automated Terraform validation and planning
+- Controlled infrastructure deployment with manual approval
+- Linux server provisioning with cloud-init
+- Nginx deployment and service verification
+- Git and GitHub workflow
+
 ## Features
 
 - Terraform modules for network and compute
