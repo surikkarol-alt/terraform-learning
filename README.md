@@ -1,5 +1,7 @@
 # Terraform OCI DevOps Project
 
+[![Terraform CI](https://github.com/surikkarol-alt/terraform-learning/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/surikkarol-alt/terraform-learning/actions/workflows/terraform-ci.yml)
+
 Infrastructure as Code project built with Terraform and Oracle Cloud Infrastructure (OCI).
 
 ## Features
