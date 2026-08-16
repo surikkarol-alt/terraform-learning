@@ -18,20 +18,37 @@ Infrastructure as Code project built with Terraform and Oracle Cloud Infrastruct
 
 ## Architecture
 
-Terraform
-├── modules
-│   ├── network
-│   └── compute
-│
-├── environments
-│   ├── dev
-│   └── prod
-│
-└── GitHub Actions
-    ├── fmt
-    ├── validate
-    ├── plan
-    └── apply
+```text
+                         GitHub
+                           |
+                    GitHub Actions
+                           |
+              +------------+------------+
+              |                         |
+             DEV                       PROD
+              |                  Manual Approval
+              |                         |
+          Terraform                 Terraform
+              |                         |
+              +----------- OCI ---------+
+                           |
+              +------------+------------+
+              |                         |
+           DEV VCN                   PROD VCN
+              |                         |
+        Public Subnet              Public Subnet
+              |                         |
+         Ubuntu VM                  Ubuntu VM
+              |                         |
+           Nginx                      Nginx
+
+
+                  OCI Object Storage
+                     Remote State
+                  +------+------+
+                  |             |
+              DEV State     PROD State
+```
 
 ## Infrastructure
 
