@@ -1,4 +1,4 @@
-# Terraform OCI DevOps Project
+## Terraform OCI DevOps Project
 
 [![Terraform CI](https://github.com/surikkarol-alt/terraform-learning/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/surikkarol-alt/terraform-learning/actions/workflows/terraform-ci.yml)
 
@@ -161,6 +161,39 @@ terraform-learning/
         └── prod/
 
 ```
+
+## How to Run
+
+Clone the repository:
+
+```bash
+git clone https://github.com/surikkarol-alt/terraform-learning.git
+cd terraform-learning
+```
+
+Initialize and check the DEV environment:
+
+```bash
+cd lesson-09-environments/environments/dev
+terraform init
+terraform validate
+terraform plan
+```
+
+Initialize and check the PROD environment:
+
+```bash
+cd ../prod
+terraform init
+terraform validate
+terraform plan
+```
+
+Infrastructure deployment is also available through the manual GitHub Actions workflows:
+
+- Terraform Apply DEV
+- Terraform Apply PROD (requires manual approval)
+
 
 ## Terraform Workflow
 
