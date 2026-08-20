@@ -57,9 +57,9 @@ jobs:
       - name: Terraform Init
         run: terraform init -input=false
 
-      - name: Terraform Destroy Plan DEV
-        run: terraform plan -destroy -input=false -out=destroy.tfplan
+      - name: Terraform Destroy Plan DEV Compute
+        run: terraform plan -destroy -target=module.compute -input=false -out=destroy-compute.tfplan
 
-      - name: Terraform Destroy DEV
-        run: terraform apply -input=false -auto-approve destroy.tfplan
+      - name: Terraform Destroy DEV Compute
+        run: terraform apply -input=false -auto-approve destroy-compute.tfplan
 
