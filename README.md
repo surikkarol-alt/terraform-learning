@@ -255,3 +255,18 @@ GitHub Actions Secrets are used for:
 - SSH public key
 
 PROD deployment is protected by a GitHub Environment and requires manual approval before `terraform apply`.
+
+## CI/CD Verification
+
+The following screenshot demonstrates the successful execution of the Terraform CI pipeline.
+
+All five GitHub Actions jobs completed successfully:
+
+- Terraform Format
+- Terraform Validate DEV
+- Terraform Validate PROD
+- Terraform Plan DEV
+- Terraform Plan PROD
+
+![Terraform CI Success](docs/screenshots/terraform-ci-success.png)
+
